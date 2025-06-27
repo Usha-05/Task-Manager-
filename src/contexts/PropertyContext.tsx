@@ -12,6 +12,7 @@ interface PropertyContextType {
   deleteProperty: (id: string) => Promise<void>;
   approveProperty: (id: string) => Promise<void>;
   getFilteredProperties: (filters: PropertyFilters) => Property[];
+  searchProperties: (filters: PropertyFilters) => void;
 }
 
 const PropertyContext = createContext<PropertyContextType | undefined>(undefined);
@@ -239,6 +240,12 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
+  const searchProperties = (filters: PropertyFilters) => {
+    // This function can be used to trigger search actions
+    // For now, it's mainly for compatibility with the Properties component
+    console.log('Searching properties with filters:', filters);
+  };
+
   return (
     <PropertyContext.Provider value={{
       properties,
@@ -248,6 +255,7 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       deleteProperty,
       approveProperty,
       getFilteredProperties,
+      searchProperties,
     }}>
       {children}
     </PropertyContext.Provider>
