@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { CheckSquare, LogOut, User } from 'lucide-react';
+import { Home, LogOut, User, Settings } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -20,8 +20,8 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <CheckSquare className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">TaskManager</span>
+              <Home className="h-8 w-8 text-blue-600" />
+              <span className="text-xl font-bold text-gray-900">HouseHunt</span>
             </Link>
           </div>
 
@@ -31,7 +31,18 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center space-x-2 text-gray-700">
                   <User className="h-4 w-4" />
                   <span className="text-sm font-medium">{user.name}</span>
+                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                    {user.role}
+                  </span>
                 </div>
+                
+                <Link to="/dashboard">
+                  <Button variant="outline" size="sm">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Button>
+                </Link>
+                
                 <Button
                   variant="outline"
                   size="sm"

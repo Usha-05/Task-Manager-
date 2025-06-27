@@ -1,18 +1,13 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { User } from '@/types';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, role: 'owner' | 'renter') => Promise<boolean>;
   logout: () => void;
 }
 
@@ -31,8 +26,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
+  // Demo users for testing
+  const demoUsers: User[] = [
+    {
+      id: '1',
+      email: 'admin@mail.com',
+      name: 'Admin User',
+      role: 'admin',
+      createdAt: new Date(),
+    },
+    {
+      id: '2',
+      email: 'owner@mail.com',
+      name: 'Property Owner',
+      role: 'owner',
+      isApproved: true,
+      createdAt: new Date(),
+    },
+    {
+      id: '3',
+      email: 'renter@mail.com',
+      name: 'Property Renter',
+      role: 'renter',
+      createdAt: new Date(),
+    },
+  ];
+
   useEffect(() => {
-    // Check for existing session
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     
@@ -51,28 +71,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setIsLoading(true);
       
-      // Simulate API call for demo purposes
-      // In a real app, this would be an actual API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (email === 'demo@example.com' && password === 'password') {
-        const userData = { id: '1', email, name: 'Demo User' };
+      const foundUser = demoUsers.find(u => u.email === email);
+      
+      if (foundUser && password === '123456') {
         const token = 'demo-jwt-token';
         
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(foundUser));
+        setUser(foundUser);
         
         toast({
           title: "Login successful",
-          description: "Welcome back!",
+          description: `Welcome back, ${foundUser.name}!`,
         });
         
         return true;
       } else {
         toast({
           title: "Login failed",
-          description: "Invalid email or password. Try demo@example.com / password",
+          description: "Invalid email or password. Use demo credentials.",
           variant: "destructive",
         });
         return false;
@@ -89,14 +108,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (name: string, email: string, password: string): Promise<boolean> => {
+  const register = async (name: string, email: string, password: string, role: 'owner' | 'renter'): Promise<boolean> => {
     try {
       setIsLoading(true);
       
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const userData = { id: Date.now().toString(), email, name };
+      const userData: User = {
+        id: Date.now().toString(),
+        email,
+        name,
+        role,
+        isApproved: role === 'renter' ? true : false,
+        createdAt: new Date(),
+      };
+      
       const token = 'demo-jwt-token';
       
       localStorage.setItem('token', token);
@@ -105,7 +131,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       toast({
         title: "Registration successful",
-        description: "Account created successfully!",
+        description: role === 'owner' 
+          ? "Account created! Please wait for admin approval to list properties."
+          : "Account created successfully!",
       });
       
       return true;
