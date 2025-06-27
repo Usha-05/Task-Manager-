@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckSquare, Eye, EyeOff } from 'lucide-react';
+import { Home, Eye, EyeOff } from 'lucide-react';
 
 const Login: React.FC = () => {
   const { user, login, isLoading } = useAuth();
@@ -53,12 +53,12 @@ const Login: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <CheckSquare className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">TaskManager</span>
+            <Home className="h-8 w-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">HouseHunt</span>
           </div>
           <CardTitle className="text-2xl">Welcome back</CardTitle>
           <CardDescription>
-            Sign in to your account to continue managing your tasks
+            Sign in to your account to continue finding your perfect home
           </CardDescription>
         </CardHeader>
         <CardContent>

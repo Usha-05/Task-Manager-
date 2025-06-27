@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckSquare, Eye, EyeOff } from 'lucide-react';
+import { Home, Eye, EyeOff } from 'lucide-react';
 
 const Register: React.FC = () => {
   const { user, register, isLoading } = useAuth();
@@ -82,7 +82,7 @@ const Register: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <CheckSquare className="h-8 w-8 text-blue-600" />
+            <Home className="h-8 w-8 text-blue-600" />
             <span className="text-2xl font-bold text-gray-900">HouseHunt</span>
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
