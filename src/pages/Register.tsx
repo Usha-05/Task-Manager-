@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckSquare, Eye, EyeOff } from 'lucide-react';
 
 const Register: React.FC = () => {
@@ -14,6 +15,7 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState<'owner' | 'renter'>('renter');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<{
@@ -21,6 +23,7 @@ const Register: React.FC = () => {
     email?: string;
     password?: string;
     confirmPassword?: string;
+    role?: string;
   }>({});
 
   if (user) {
@@ -33,6 +36,7 @@ const Register: React.FC = () => {
       email?: string;
       password?: string;
       confirmPassword?: string;
+      role?: string;
     } = {};
     
     if (!name.trim()) {
@@ -70,7 +74,7 @@ const Register: React.FC = () => {
       return;
     }
 
-    await register(name.trim(), email, password);
+    await register(name.trim(), email, password, role);
   };
 
   return (
@@ -79,11 +83,11 @@ const Register: React.FC = () => {
         <CardHeader className="text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <CheckSquare className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">TaskManager</span>
+            <span className="text-2xl font-bold text-gray-900">HouseHunt</span>
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
           <CardDescription>
-            Join us and start managing your tasks more effectively
+            Join us and start finding your perfect home
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -115,6 +119,22 @@ const Register: React.FC = () => {
               />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="role">I want to</Label>
+              <Select value={role} onValueChange={(value: 'owner' | 'renter') => setRole(value)}>
+                <SelectTrigger className={errors.role ? 'border-red-500' : ''}>
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="renter">Rent properties</SelectItem>
+                  <SelectItem value="owner">List my properties</SelectItem>
+                </SelectContent>
+              </Select>
+              {errors.role && (
+                <p className="text-sm text-red-500">{errors.role}</p>
               )}
             </div>
             
